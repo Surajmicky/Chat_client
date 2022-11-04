@@ -3,9 +3,11 @@ import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import Logo from '../icons/whatsapp.png'
 import {useState,useEffect} from 'react';
-import {ToastContainer,toast} from 'toastify'
-
-
+import {ToastContainer,toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.min.css'
+import axios from 'axios';
+import {registerRoute} from '../utils/APIRoutes'
 const Register = () => {
     const [values,setValues]=useState({
         username:"",
@@ -17,10 +19,42 @@ const Register = () => {
       setValues({...values,[event.target.name]:event.target.value})
       console.log(values)
     }
-    const handleSubmit=(event)=>{
+    const handleSubmit= async(event)=>{
        event.preventDefault();
+       console.log(toast)
+       if(handleValidation()){
+            const {username,email,password}=values;
+            let {data}=await axios.post(registerRoute,{username,email,password});
+
+       }
+     
        
 
+    }
+    const toastCSS={
+      position:'bottom-right',
+      autoClose:6000,
+      pauseOnHover:true,
+      draggable:true,
+      theme:'dark'
+
+    }
+    const handleValidation=()=>{
+       let {username,email,password,confirmPassword}=values;
+      if(username.length<3){
+        toast.error('Username should be at least 3 characters',toastCSS);
+        return false;
+      }else if(email==''){
+        toast.error('please enter valid email',toastCSS);
+        return false;
+      }else if(password.length<8){
+        toast.error('password should be at least 8 characters',toastCSS);
+        return false;
+      }else if(password!==confirmPassword){
+        toast.error('password and confirm password do not match',toastCSS);
+        return false;
+      }
+      return true;
     }
   return (
     <>
@@ -36,6 +70,7 @@ const Register = () => {
         <input type="password" name="password" placeholder="Password" onChange={(event)=>handleChange(event)} />
         <input type="password" name="confirmPassword" placeholder="Confirm Password" onChange={(event)=>handleChange(event)} />
         <button>Submit</button>
+        <ToastContainer/>
         <span>Already have an account ? <Link to="/login">Login</Link></span>
       
     </form>
@@ -74,10 +109,10 @@ const FormContainer= styled.div`
   form{
     display:flex;
     flex-direction:column;
-    gap:2rem;
+    gap:1.5rem;
     align-items:center;
     background-color:#00000076;
-    padding:3rem 5rem;
+    padding:2.5rem 3.5rem;
     border-radius:2rem;
   }
  
