@@ -48,7 +48,7 @@ const Register = () => {
             if(data.status===true){
               localStorage.setItem('chat-app-usr',JSON.stringify(data));
 
-             navigate('/')
+             navigate('/login')
             }
        }
      

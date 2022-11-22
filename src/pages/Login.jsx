@@ -5,7 +5,6 @@ import Logo from '../icons/whatsapp.png'
 import {useState,useEffect} from 'react';
 import {ToastContainer,toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import axios from 'axios';
 import {loginRoute} from '../utils/APIRoutes';
 
@@ -14,7 +13,8 @@ const Login = () => {
         username:"",
         password:"",
         confirmPassword:""
-    })
+    });
+    
     useEffect(()=>{
       if(localStorage.getItem('chat-app-usr')){
         navigate('/')
@@ -44,8 +44,9 @@ const Login = () => {
             if(data.status===false){
               toast.error(data.message,toastCSS)
             }
-            if(data.status===true){
-              localStorage.setItem('chat-app-usr',JSON.stringify(data));
+            if(data.status===true ){
+              localStorage.setItem('chat-app-usr',JSON.stringify(data.token));
+              // setCookies('token',data.token,'/')
              navigate('/')
             }
        }
