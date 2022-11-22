@@ -5,7 +5,7 @@ import Logo from '../icons/whatsapp.png'
 import {useState,useEffect} from 'react';
 import {ToastContainer,toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import 'react-toastify/dist/ReactToastify.min.css'
+
 import axios from 'axios';
 import {registerRoute} from '../utils/APIRoutes'
 const Register = () => {
@@ -25,33 +25,33 @@ const Register = () => {
        if(handleValidation()){
             const {username,email,password}=values;
             let {data}=await axios.post(registerRoute,{username,email,password});
-
+            
        }
      
        
 
     }
-    const toastCSS={
-      position:'bottom-right',
-      autoClose:6000,
-      pauseOnHover:true,
-      draggable:true,
-      theme:'dark'
+    // const toastCSS={
+    //   position:'bottom-right',
+    //   autoClose:6000,
+    //   pauseOnHover:true,
+    //   draggable:true,
+    //   theme:'dark'
 
-    }
+    // }
     const handleValidation=()=>{
        let {username,email,password,confirmPassword}=values;
       if(username.length<3){
-        toast.error('Username should be at least 3 characters',toastCSS);
+        toast.error('Username should be at least 3 characters');
         return false;
       }else if(email==''){
-        toast.error('please enter valid email',toastCSS);
+        toast.error('please enter valid email');
         return false;
       }else if(password.length<8){
-        toast.error('password should be at least 8 characters',toastCSS);
+        toast.error('password should be at least 8 characters');
         return false;
       }else if(password!==confirmPassword){
-        toast.error('password and confirm password do not match',toastCSS);
+        toast.error('password and confirm password do not match');
         return false;
       }
       return true;
