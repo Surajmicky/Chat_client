@@ -1,57 +1,74 @@
 import React from 'react'
 import styled from 'styled-components';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import Logo from '../icons/whatsapp.png'
 import {useState,useEffect} from 'react';
 import {ToastContainer,toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import axios from 'axios';
-import {registerRoute} from '../utils/APIRoutes'
+import {registerRoute} from '../utils/APIRoutes';
+
 const Register = () => {
     const [values,setValues]=useState({
         username:"",
         email:"",
         password:"",
-        cofirmPassword:""
+        confirmPassword:""
     })
+  useEffect(()=>{
+    if(localStorage.getItem('chat-app-usr')){
+      navigate('/')
+    }
+  },[])
+    const navigate= useNavigate()
     const handleChange=(event) => {
       setValues({...values,[event.target.name]:event.target.value})
-      console.log(values)
+
+    }
+    const toastCSS={
+      position:'bottom-right',
+      autoClose:6000,
+      pauseOnHover:true,
+      draggable:true,
+      theme:'dark'
+
     }
     const handleSubmit= async(event)=>{
        event.preventDefault();
-       console.log(toast)
+       
        if(handleValidation()){
             const {username,email,password}=values;
+             console.log(username,email,password)
             let {data}=await axios.post(registerRoute,{username,email,password});
-            
+       
+            if(data.status===false){
+              toast.error(data.message,toastCSS)
+            }
+            if(data.status===true){
+              localStorage.setItem('chat-app-usr',JSON.stringify(data));
+
+             navigate('/')
+            }
        }
      
        
 
     }
-    // const toastCSS={
-    //   position:'bottom-right',
-    //   autoClose:6000,
-    //   pauseOnHover:true,
-    //   draggable:true,
-    //   theme:'dark'
-
-    // }
+ 
     const handleValidation=()=>{
        let {username,email,password,confirmPassword}=values;
       if(username.length<3){
-        toast.error('Username should be at least 3 characters');
+        toast.error('Username should be at least 3 characters',toastCSS);
         return false;
       }else if(email==''){
-        toast.error('please enter valid email');
+        toast.error('please enter valid email',toastCSS);
         return false;
       }else if(password.length<8){
-        toast.error('password should be at least 8 characters');
+        toast.error('password should be at least 8 characters',toastCSS);
         return false;
       }else if(password!==confirmPassword){
-        toast.error('password and confirm password do not match');
+        toast.error('password and confirm password do not match',toastCSS);
         return false;
       }
       return true;
