@@ -18,7 +18,7 @@ const Register = () => {
     })
   useEffect(()=>{
     if(localStorage.getItem('chat-app-usr')){
-      navigate('/')
+      navigate('/chat')
     }
   },[])
     const navigate= useNavigate()
@@ -61,7 +61,7 @@ const Register = () => {
       if(username.length<3){
         toast.error('Username should be at least 3 characters',toastCSS);
         return false;
-      }else if(email==''){
+      }else if(email===''){
         toast.error('please enter valid email',toastCSS);
         return false;
       }else if(password.length<8){
