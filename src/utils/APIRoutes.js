@@ -1,4 +1,4 @@
-export const host = "https://chatnow-server.onrender.com";
+export const host = "https://chatapp-server-4q3i.onrender.com";
 export const loginRoute = `${host}/api/auth/login`;
 export const registerRoute = `${host}/api/auth/register`;
 export const logoutRoute = `${host}/api/auth/logout`;
